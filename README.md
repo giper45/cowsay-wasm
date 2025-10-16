@@ -100,16 +100,16 @@ $ wasmer run cowsay -f src/cows/elephant.cow "This is a test run"
 First, you will need the WASI target installed in your Rust system:
 
 ```shell
-rustup target add wasm32-wasi
+rustup target add wasm32-wasip1
 ```
 
 Once WASI is available, you can build the WebAssembly binary by yourself with:
 
 ```shell
-cargo build --release --target wasm32-wasi
+cargo build --release --target wasm32-wasip1
 ```
 
-This will create a new file located at `target/wasm32-wasi/release/cowsay.wasm`.
+This will create a new file located at `target/wasm32-wasip1/release/cowsay.wasm`.
 
 When the wasm file is created you can upload it to wasmer or execute it with wasmer:
 
