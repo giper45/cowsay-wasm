@@ -5,7 +5,7 @@ extern crate include_dir;
 extern crate wee_alloc;
 
 use clap::{App, Arg};
-use rand::{sample, thread_rng};
+use rand::{thread_rng, Rng};
 use std::env;
 // use std::fs::File;
 use std::io::{self, Read};
@@ -43,7 +43,7 @@ fn format_animal(s: String, thoughts: &str, eyes: &str, tongue: &str) -> String 
         .filter(|&x| !x.starts_with("##") && !x.contains("EOC"))
         .collect::<Vec<_>>()
         .join("\n")
-        .trim_right()
+        .trim_end()
         .replace("$eyes", eyes)
         .replace("$thoughts", thoughts)
         .replace("$tongue", tongue)
@@ -237,7 +237,8 @@ fn main() {
         true => {
             let mut rng = thread_rng();
             let cows = list_cows();
-            sample(&mut rng, cows, 1).first().unwrap().to_owned()
+            let idx = rng.gen_range(0, cows.len());
+            cows[idx].clone()
         }
         false => cow,
     };
@@ -258,7 +259,7 @@ fn main() {
         "" => {
             let mut buffer = String::new();
             io::stdin().read_to_string(&mut buffer).unwrap();
-            buffer.trim_right().to_string()
+            buffer.trim_end().to_string()
         }
         _ => message,
     };
@@ -311,9 +312,7 @@ fn main() {
         }
     }
 
-    let mut cowbody = String::new();
-
-    match cow.contains(".cow") {
+    let cowbody = match cow.contains(".cow") {
         true => {
             unimplemented!("Can't provide external cowfiles for now")
             // let mut f = File::open(&cow).unwrap();
@@ -325,9 +324,9 @@ fn main() {
             let file = PROJECT_DIR
                 .get_file(&fmt)
                 .expect(&format!("Can't find the cow file {}", cow));
-            cowbody = str::from_utf8(file.contents).unwrap().to_string();
+            str::from_utf8(file.contents).unwrap().to_string()
         }
-    }
+    };
 
     println!("{}", make_bubble(message.to_string(), width, think, wrap));
     println!("{}", format_animal(cowbody, voice, eyes, tongue));

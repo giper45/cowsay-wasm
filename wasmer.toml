@@ -8,7 +8,7 @@ entrypoint = "cowsay"
 
 [[module]]
 name = "cowsay"
-source = "target/wasm32-wasi/release/cowsay.wasm"
+source = "target/wasm32-wasip1/release/cowsay.wasm"
 abi = "wasi"
 interfaces = {wasi= "0.1.0-unstable"}
 
